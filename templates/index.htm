@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>HCC Proxy Console</title>
+    </head>
+    <body>
+        <h1>Routes</h1>
+        <table>
+            <tr><th>Connection</th><th>Status</th><th>Action</th></tr>
+{{range .}}
+            <tr><td>{{.Connection}}</td><td>{{.Status}}</td><td>{{if .Enable}}Enable{{else}}Disable{{end}}</td></tr>
+{{end}}
+        </table>
+    </body>
+</html>
