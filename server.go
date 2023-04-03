@@ -1,5 +1,7 @@
 package main
 
+// TODO: routes as context vars?
+
 import (
 	"fmt"
 	"log"
@@ -37,6 +39,38 @@ func indexPageHandler(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Panic(err)
 	}
+}
+
+func routeEnableHandler(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Enabling route")
+
+	routeID, ok := request.URL.Query()["id"]
+	if !ok {
+		log.Printf("Router ID not provided")
+	}
+
+	err := enableRouteWithID(routeID)
+	if err != nil {
+		log.Println(err)
+	}
+
+	indexPageHandler(writer, request)
+}
+
+func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Disabling route")
+
+	routeID, ok := request.URL.Query()["id"]
+	if !ok {
+		log.Printf("Router ID not provided")
+	}
+
+	err := disableRouteWithID(routeID)
+	if err != nil {
+		log.Println(err)
+	}
+
+	indexPageHandler(writer, request)
 }
 
 func notFoundResponse(writer http.ResponseWriter) {
@@ -86,6 +120,7 @@ func writeResponse(writer http.ResponseWriter, message string) {
 }
 
 func startServer(address string) {
+	// TODO: use Gorilla mux
 	log.Printf("Starting HTTP server at address %s", address)
 
 	mime.AddExtensionType(".js", "application/javascript")
@@ -100,7 +135,9 @@ func startServer(address string) {
 	http.HandleFunc("/bootstrap.min.js", staticPage("static/bootstrap.min.js"))
 	http.HandleFunc("/ccx.css", staticPage("static/ccx.css"))
 
-	http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("static"))))
+	// handlers for REST API like (just like) calls
+	http.HandleFunc("/route/enable", routeEnableHandler)
+	http.HandleFunc("/route/disable", routeDisableHandler)
 
 	http.ListenAndServe(address, nil)
 }
