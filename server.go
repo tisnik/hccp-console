@@ -14,6 +14,7 @@ import (
 
 const (
 	indexPageFilename = "templates/index.htm"
+	errorPageFilename = "templates/error.htm"
 )
 
 const (
@@ -41,17 +42,38 @@ func indexPageHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func errorPageHandler(writer http.ResponseWriter, request *http.Request, errorToDisplay error) {
+	// re-read template (so we will be able to change template on the fly)
+	// TODO: do it in init() in production code
+	errorPageTemplate := template.Must(template.ParseFiles(errorPageFilename))
+
+	log.Printf("Handling request at %s as error", request.URL.Path)
+
+	// error string
+	errorStr := errorToDisplay.Error()
+
+	// apply template
+	err := errorPageTemplate.Execute(writer, errorStr)
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
 func routeEnableHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Printf("Enabling route")
 
 	routeID, ok := request.URL.Query()["id"]
 	if !ok {
 		log.Printf("Router ID not provided")
+		errorPageHandler(writer, request, fmt.Errorf("Router ID not provided"))
+		return
 	}
 
 	err := enableRouteWithID(routeID)
 	if err != nil {
 		log.Println(err)
+		errorPageHandler(writer, request, err)
+		return
 	}
 
 	indexPageHandler(writer, request)
@@ -63,11 +85,15 @@ func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
 	routeID, ok := request.URL.Query()["id"]
 	if !ok {
 		log.Printf("Router ID not provided")
+		errorPageHandler(writer, request, fmt.Errorf("Router ID not provided"))
+		return
 	}
 
 	err := disableRouteWithID(routeID)
 	if err != nil {
 		log.Println(err)
+		errorPageHandler(writer, request, err)
+		return
 	}
 
 	indexPageHandler(writer, request)

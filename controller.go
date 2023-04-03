@@ -26,7 +26,7 @@ func enableRouteWithID(ids []string) error {
 	}
 
 	err = updateRouteState(routerID, true)
-	return nil
+	return err
 }
 
 func disableRouteWithID(ids []string) error {
@@ -36,7 +36,7 @@ func disableRouteWithID(ids []string) error {
 	}
 
 	err = updateRouteState(routerID, false)
-	return nil
+	return err
 }
 
 func updateRouteState(routerID int, enable bool) error {
