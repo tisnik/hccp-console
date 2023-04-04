@@ -19,8 +19,13 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strconv"
 )
+
+const HAProxyConfigFile = "haproxy.cfg"
 
 func retrieveRouterID(id string) (int, error) {
 	if len(id) == 0 {
@@ -66,4 +71,19 @@ func updateRouteState(routerID int, enable bool) error {
 		updateRouteStatus(routerID, "disconnected", false)
 	}
 	return nil
+}
+
+func readHAProxyConfiguration() (string, error) {
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+
+	path := filepath.Join(homedir, HAProxyConfigFile)
+	config, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	return string(config), nil
 }

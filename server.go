@@ -29,8 +29,9 @@ import (
 )
 
 const (
-	indexPageFilename = "templates/index.htm"
-	errorPageFilename = "templates/error.htm"
+	indexPageFilename            = "templates/index.htm"
+	errorPageFilename            = "templates/error.htm"
+	haProxyConfigurationFilename = "templates/configuration.htm"
 )
 
 const (
@@ -155,6 +156,24 @@ func haProxyDisplayStatusHandler(writer http.ResponseWriter, request *http.Reque
 	indexPageHandler(writer, request)
 }
 
+func haProxyDisplayConfiguration(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Display HAProxy configuration")
+	displayConfigurationTemplate := template.Must(template.ParseFiles(haProxyConfigurationFilename))
+
+	log.Printf("Handling request at %s as display configuration page", request.URL.Path)
+
+	configuration, err := readHAProxyConfiguration()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	// apply template
+	err = displayConfigurationTemplate.Execute(writer, configuration)
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
 func notFoundResponse(writer http.ResponseWriter) {
 	writeResponse(writer, "Not found!")
 }
@@ -223,6 +242,7 @@ func startServer(address string) {
 	http.HandleFunc("/haproxy/check_installation", haProxyCheckInstallationHandler)
 	http.HandleFunc("/haproxy/check_running", haProxyRunningHandler)
 	http.HandleFunc("/haproxy/display_status", haProxyDisplayStatusHandler)
+	http.HandleFunc("/haproxy/display_configuration", haProxyDisplayConfiguration)
 
 	http.ListenAndServe(address, nil)
 }
