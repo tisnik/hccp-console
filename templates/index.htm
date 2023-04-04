@@ -19,21 +19,29 @@
                     </div>
                 </div>
             </nav>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">Routes</div>
-                        <table class="table table-condensed table-hover table-bordered" rules="all">
-                            <tr><th width="10%">ID</th><th>Connection</th><th width="10%">Status</th><th width="10%">Action</th></tr>
-                            {{range .}}
-                                <tr>
-                                    <td>{{.ID}}</td>
-                                    <td>{{.Connection}}</td>
-                                    <td>{{.Status}}</td>
-                                    <td>{{if .Enabled}}<a href="/route/disable?id={{.ID}}">Disable</a>{{else}}<a href="/route/enable?id={{.ID}}">Enable{{end}}</td>
-                                </tr>
-                            {{end}}
-                        </table>
-                    </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Routes</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th width="10%">ID</th><th>Connection</th><th width="10%">Status</th><th width="10%">Action</th></tr>
+                        {{range .}}
+                            <tr>
+                                <td>{{.ID}}</td>
+                                <td>{{.Connection}}</td>
+                                <td>{{.Status}}</td>
+                                <td>{{if .Enabled}}<a href="/route/disable?id={{.ID}}">Disable</a>{{else}}<a href="/route/enable?id={{.ID}}">Enable{{end}}</a></td>
+                            </tr>
+                        {{end}}
+                    </table>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">HAProxy setup</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><td><a href="/haproxy/check_installation">Check if HAProxy is installed</a></td></tr>
+                        <tr><td><a href="/haproxy/check_running">Check if HAProxy is running</a></td></tr>
+                        <tr><td><a href="/haproxy/display_status">Display HAProxy status</a></td></tr>
+                    </table>
                 </div>
+            </div>
             <br/>
             <br/>
             <br/>
