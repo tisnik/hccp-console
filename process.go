@@ -41,7 +41,10 @@ func getProcessPID(processName string) (int, error) {
 		return -1, err
 	}
 
-	slurp, _ := io.ReadAll(stdout)
+	slurp, err := io.ReadAll(stdout)
+	if err != nil {
+		return -1, err
+	}
 
 	pid, err := strconv.Atoi(strings.TrimSpace(string(slurp)))
 	if err != nil {
