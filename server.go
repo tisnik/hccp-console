@@ -117,7 +117,21 @@ func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
 
 func haProxyCheckInstallationHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Printf("Check HAProxy installation")
-	indexPageHandler(writer, request)
+
+	exists, err := executableExist("haproxy")
+	if err != nil {
+		log.Println(err)
+		errorPageHandler(writer, request, err)
+		return
+	}
+
+	if exists {
+		log.Printf("Exists")
+		sendStaticPage(writer, "static/haproxy_is_installed.htm")
+	} else {
+		log.Printf("Does not exist")
+		sendStaticPage(writer, "static/haproxy_is_not_installed.htm")
+	}
 }
 
 func haProxyRunningHandler(writer http.ResponseWriter, request *http.Request) {
