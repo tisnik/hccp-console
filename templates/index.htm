@@ -28,7 +28,8 @@
                                 <td>{{.ID}}</td>
                                 <td>{{.Connection}}</td>
                                 <td>{{.Status}}</td>
-                                <td>{{if .Enabled}}<a href="/route/disable?id={{.ID}}">Disable</a>{{else}}<a href="/route/enable?id={{.ID}}">Enable{{end}}</a></td>
+                                <td>{{if .Enabled}}<a href="/route/disable?id={{.ID}}">Disable</a>{{else}}<a href="/route/enable?id={{.ID}}">Enable</a>{{end}}</td>
+                                <td>{{if .Enabled}}<form action="/route/disable" method="post"><input type="hidden" name="id" value="{{.ID}}"><button type="submit" class="btn btn-danger" style="width:6em">Disable</button></form>{{else}}<form action="/route/enable" method="post"><input type="hidden" name="id" value="{{.ID}}"><button type="submit" class="btn btn-success" style="width:6em">Enable</button></form>{{end}}</a></td>
                             </tr>
                         {{end}}
                     </table>

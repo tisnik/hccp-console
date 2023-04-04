@@ -22,12 +22,12 @@ import (
 	"strconv"
 )
 
-func retrieveRouterID(ids []string) (int, error) {
-	if len(ids) != 1 {
+func retrieveRouterID(id string) (int, error) {
+	if len(id) == 0 {
 		return -1, errors.New("ID not provided, or multiple IDs provided")
 	}
 
-	routerID, err := strconv.Atoi(ids[0])
+	routerID, err := strconv.Atoi(id)
 	if err != nil {
 		return -1, err
 	}
@@ -35,8 +35,8 @@ func retrieveRouterID(ids []string) (int, error) {
 	return routerID, nil
 }
 
-func enableRouteWithID(ids []string) error {
-	routerID, err := retrieveRouterID(ids)
+func enableRouteWithID(id string) error {
+	routerID, err := retrieveRouterID(id)
 	if err != nil {
 		return err
 	}
@@ -45,8 +45,8 @@ func enableRouteWithID(ids []string) error {
 	return err
 }
 
-func disableRouteWithID(ids []string) error {
-	routerID, err := retrieveRouterID(ids)
+func disableRouteWithID(id string) error {
+	routerID, err := retrieveRouterID(id)
 	if err != nil {
 		return err
 	}

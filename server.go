@@ -78,14 +78,16 @@ func errorPageHandler(writer http.ResponseWriter, request *http.Request, errorTo
 func routeEnableHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Printf("Enabling route")
 
-	routeID, ok := request.URL.Query()["id"]
-	if !ok {
+	err := request.ParseForm()
+	if err != nil {
 		log.Printf("Router ID not provided")
 		errorPageHandler(writer, request, fmt.Errorf("Router ID not provided"))
 		return
 	}
 
-	err := enableRouteWithID(routeID)
+	routeID := request.FormValue("id")
+
+	err = enableRouteWithID(routeID)
 	if err != nil {
 		log.Println(err)
 		errorPageHandler(writer, request, err)
@@ -98,14 +100,16 @@ func routeEnableHandler(writer http.ResponseWriter, request *http.Request) {
 func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Printf("Disabling route")
 
-	routeID, ok := request.URL.Query()["id"]
-	if !ok {
+	err := request.ParseForm()
+	if err != nil {
 		log.Printf("Router ID not provided")
 		errorPageHandler(writer, request, fmt.Errorf("Router ID not provided"))
 		return
 	}
 
-	err := disableRouteWithID(routeID)
+	routeID := request.FormValue("id")
+
+	err = disableRouteWithID(routeID)
 	if err != nil {
 		log.Println(err)
 		errorPageHandler(writer, request, err)
