@@ -115,6 +115,28 @@ func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
 	indexPageHandler(writer, request)
 }
 
+func haProxyCheckInstallationHandler(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Check HAProxy installation")
+	indexPageHandler(writer, request)
+}
+
+func haProxyRunningHandler(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Check if HAProxy is running")
+
+	if processRunning("haproxy") {
+		log.Printf("Running")
+		sendStaticPage(writer, "static/haproxy_running.htm")
+	} else {
+		log.Printf("Not running")
+		sendStaticPage(writer, "static/haproxy_not_running.htm")
+	}
+}
+
+func haProxyDisplayStatusHandler(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Display HAProxy status")
+	indexPageHandler(writer, request)
+}
+
 func notFoundResponse(writer http.ResponseWriter) {
 	writeResponse(writer, "Not found!")
 }
@@ -180,6 +202,9 @@ func startServer(address string) {
 	// handlers for REST API like (just like) calls
 	http.HandleFunc("/route/enable", routeEnableHandler)
 	http.HandleFunc("/route/disable", routeDisableHandler)
+	http.HandleFunc("/haproxy/check_installation", haProxyCheckInstallationHandler)
+	http.HandleFunc("/haproxy/check_running", haProxyRunningHandler)
+	http.HandleFunc("/haproxy/display_status", haProxyDisplayStatusHandler)
 
 	http.ListenAndServe(address, nil)
 }

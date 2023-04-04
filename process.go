@@ -16,8 +16,6 @@ limitations under the License.
 
 package main
 
-import "fmt"
-
 import "strings"
 import "strconv"
 import "io"
