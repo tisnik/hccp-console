@@ -16,6 +16,12 @@ build: ${BINARY} ## Build binary containing service executable
 ${BINARY}: ${SOURCES}
 	go build
 
+style: goconst
+
+goconst: ## Run goconst checker
+	@echo "Running goconst checker"
+	./goconst.sh ${VERBOSE}
+
 help: ## Show this help screen
 	@echo 'Usage: make <OPTIONS> ... <TARGETS>'
 	@echo ''
