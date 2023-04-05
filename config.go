@@ -21,4 +21,5 @@ const (
 	HAProxyConfigFile     = "haproxy.cfg"
 	HAProxyExecutableName = "haproxy"
 	HAProxyProcessName    = "haproxy"
+	HAProxyUnixSocket     = "/tmp/haproxy.sock"
 )
