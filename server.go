@@ -47,7 +47,8 @@ const (
 
 // Messages
 const (
-	routerIDNotProvidedMessage = "Router ID not provided"
+	routerIDNotProvidedMessage    = "Router ID not provided"
+	unableToRegisterMIMEExtension = "Unable to register MIME extension"
 )
 
 func indexPageHandler(writer http.ResponseWriter, request *http.Request) {
@@ -229,8 +230,15 @@ func startServer(address string) {
 	// TODO: use Gorilla mux
 	log.Printf("Starting HTTP server at address %s", address)
 
-	mime.AddExtensionType(".js", "application/javascript")
-	mime.AddExtensionType(".css", "application/foobar")
+	err := mime.AddExtensionType(".js", "application/javascript")
+	if err != nil {
+		log.Fatal(unableToRegisterMIMEExtension, err)
+	}
+
+	err = mime.AddExtensionType(".css", "application/foobar")
+	if err != nil {
+		log.Fatal(unableToRegisterMIMEExtension, err)
+	}
 
 	// handler for templates etc
 	http.HandleFunc("/", indexPageHandler)
@@ -249,5 +257,8 @@ func startServer(address string) {
 	http.HandleFunc("/haproxy/display_status", haProxyDisplayStatusHandler)
 	http.HandleFunc("/haproxy/display_configuration", haProxyDisplayConfiguration)
 
-	http.ListenAndServe(address, nil)
+	err = http.ListenAndServe(address, nil)
+	if err != nil {
+		log.Fatal("Unable to start HTTP server", err)
+	}
 }
