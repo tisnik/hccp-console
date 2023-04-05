@@ -17,5 +17,5 @@ limitations under the License.
 package main
 
 func main() {
-	startServer("localhost:8080")
+	startServer(serverAddress)
 }

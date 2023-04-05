@@ -25,8 +25,6 @@ import (
 	"strconv"
 )
 
-const HAProxyConfigFile = "haproxy.cfg"
-
 func retrieveRouterID(id string) (int, error) {
 	if len(id) == 0 {
 		return -1, errors.New("ID not provided, or multiple IDs provided")
