@@ -45,6 +45,11 @@ const (
 	ContentTypeCSS = "text/css"
 )
 
+// Messages
+const (
+	routerIDNotProvidedMessage = "Router ID not provided"
+)
+
 func indexPageHandler(writer http.ResponseWriter, request *http.Request) {
 	// re-read template (so we will be able to change template on the fly)
 	// TODO: do it in init() in production code
@@ -81,8 +86,8 @@ func routeEnableHandler(writer http.ResponseWriter, request *http.Request) {
 
 	err := request.ParseForm()
 	if err != nil {
-		log.Printf("Router ID not provided")
-		errorPageHandler(writer, request, fmt.Errorf("Router ID not provided"))
+		log.Printf(routerIDNotProvidedMessage)
+		errorPageHandler(writer, request, fmt.Errorf(routerIDNotProvidedMessage))
 		return
 	}
 
@@ -103,8 +108,8 @@ func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
 
 	err := request.ParseForm()
 	if err != nil {
-		log.Printf("Router ID not provided")
-		errorPageHandler(writer, request, fmt.Errorf("Router ID not provided"))
+		log.Printf(routerIDNotProvidedMessage)
+		errorPageHandler(writer, request, fmt.Errorf(routerIDNotProvidedMessage))
 		return
 	}
 
