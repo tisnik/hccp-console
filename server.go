@@ -32,6 +32,7 @@ const (
 	indexPageFilename            = "templates/index.htm"
 	errorPageFilename            = "templates/error.htm"
 	haProxyConfigurationFilename = "templates/configuration.htm"
+	haProxyInfoFilename          = "templates/info.htm"
 )
 
 const (
@@ -159,7 +160,21 @@ func haProxyRunningHandler(writer http.ResponseWriter, request *http.Request) {
 
 func haProxyDisplayStatusHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Printf("Display HAProxy status")
-	indexPageHandler(writer, request)
+	displayHAProxyInfoTemplate := template.Must(template.ParseFiles(haProxyInfoFilename))
+
+	log.Printf("Handling request at %s as display configuration page", request.URL.Path)
+	output, err := readFromSocket("show info\n")
+	if err != nil {
+		// TODO: error page
+		log.Panic(err)
+	}
+
+	// apply template
+	err = displayHAProxyInfoTemplate.Execute(writer, output)
+	if err != nil {
+		// TODO: error page
+		log.Panic(err)
+	}
 }
 
 func haProxyDisplayConfiguration(writer http.ResponseWriter, request *http.Request) {
@@ -170,12 +185,14 @@ func haProxyDisplayConfiguration(writer http.ResponseWriter, request *http.Reque
 
 	configuration, err := readHAProxyConfiguration()
 	if err != nil {
+		// TODO: error page
 		log.Panic(err)
 	}
 
 	// apply template
 	err = displayConfigurationTemplate.Execute(writer, configuration)
 	if err != nil {
+		// TODO: error page
 		log.Panic(err)
 	}
 }
