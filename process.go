@@ -16,10 +16,12 @@ limitations under the License.
 
 package main
 
-import "strings"
-import "strconv"
-import "io"
-import "os/exec"
+import (
+	"io"
+	"os/exec"
+	"strconv"
+	"strings"
+)
 
 func processRunning(processName string) bool {
 	command := exec.Command("pidof", processName)
