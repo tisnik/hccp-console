@@ -45,7 +45,12 @@ func sendCommandThroughSocket(command string) (string, error) {
 		log.Fatal(err)
 		return "", err
 	}
-	defer connection.Close()
+	defer func() {
+		err := connection.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	_, err = connection.Write([]byte(command))
 	if err != nil {
