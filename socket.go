@@ -39,7 +39,7 @@ func reader(r io.Reader) string {
 	return output
 }
 
-func readFromSocket(command string) (string, error) {
+func sendCommandThroughSocket(command string) (string, error) {
 	connection, err := net.Dial("unix", HAProxyUnixSocket)
 	if err != nil {
 		log.Fatal(err)
