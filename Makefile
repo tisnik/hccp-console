@@ -20,6 +20,10 @@ fmt: ## Run go fmt -w for all sources
 	@echo "Running go formatting"
 	./gofmt.sh
 
+lint: ## Run golint
+	@echo "Running go lint"
+	./golint.sh
+
 cyclo: ## Run gocyclo
 	@echo "Running gocyclo"
 	./gocyclo.sh
@@ -32,7 +36,7 @@ goconst: ## Run goconst checker
 	@echo "Running goconst checker"
 	./goconst.sh ${VERBOSE}
 
-style: fmt cyclo goconst errcheck
+style: fmt lint cyclo goconst errcheck
 
 help: ## Show this help screen
 	@echo 'Usage: make <OPTIONS> ... <TARGETS>'
