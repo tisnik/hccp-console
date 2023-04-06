@@ -16,6 +16,7 @@ limitations under the License.
 
 package main
 
+// Route represents mocked route table
 type Route struct {
 	ID         int
 	Connection string
