@@ -16,7 +16,11 @@ build: ${BINARY} ## Build binary containing service executable
 ${BINARY}: ${SOURCES}
 	go build
 
-style: goconst
+cyclo: ## Run gocyclo
+	@echo "Running gocyclo"
+	./gocyclo.sh
+
+style: cyclo goconst
 
 goconst: ## Run goconst checker
 	@echo "Running goconst checker"
