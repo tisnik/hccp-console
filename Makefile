@@ -16,6 +16,10 @@ build: ${BINARY} ## Build binary containing service executable
 ${BINARY}: ${SOURCES}
 	go build
 
+fmt: ## Run go fmt -w for all sources
+	@echo "Running go formatting"
+	./gofmt.sh
+
 cyclo: ## Run gocyclo
 	@echo "Running gocyclo"
 	./gocyclo.sh
@@ -24,11 +28,11 @@ errcheck: ## Run errcheck
 	@echo "Running errcheck"
 	./goerrcheck.sh
 
-style: cyclo goconst errcheck
-
 goconst: ## Run goconst checker
 	@echo "Running goconst checker"
 	./goconst.sh ${VERBOSE}
+
+style: fmt cyclo goconst errcheck
 
 help: ## Show this help screen
 	@echo 'Usage: make <OPTIONS> ... <TARGETS>'
