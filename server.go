@@ -33,6 +33,7 @@ const (
 	errorPageFilename            = "templates/error.htm"
 	haProxyConfigurationFilename = "templates/configuration.htm"
 	haProxyInfoFilename          = "templates/info.htm"
+	haDisplayRoutesFilename      = "templates/routes.htm"
 )
 
 const (
@@ -127,6 +128,26 @@ func routeDisableHandler(writer http.ResponseWriter, request *http.Request) {
 	indexPageHandler(writer, request)
 }
 
+func routeDisplayHandler(writer http.ResponseWriter, request *http.Request) {
+	log.Printf("Display routes")
+	displayRoutesTemplate := template.Must(template.ParseFiles(haDisplayRoutesFilename))
+
+	log.Printf("Handling request at %s as display routes page", request.URL.Path)
+
+	configuration, err := sendCommandThroughSocket("show servers state\n")
+	if err != nil {
+		// TODO: error page
+		log.Panic(err)
+	}
+
+	// apply template
+	err = displayRoutesTemplate.Execute(writer, configuration)
+	if err != nil {
+		// TODO: error page
+		log.Panic(err)
+	}
+}
+
 func haProxyCheckInstallationHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Printf("Check HAProxy installation")
 
@@ -163,7 +184,7 @@ func haProxyDisplayStatusHandler(writer http.ResponseWriter, request *http.Reque
 	displayHAProxyInfoTemplate := template.Must(template.ParseFiles(haProxyInfoFilename))
 
 	log.Printf("Handling request at %s as display configuration page", request.URL.Path)
-	output, err := readFromSocket("show info\n")
+	output, err := sendCommandThroughSocket("show info\n")
 	if err != nil {
 		// TODO: error page
 		log.Panic(err)
@@ -269,6 +290,7 @@ func startServer(address string) {
 	// handlers for REST API like (just like) calls
 	http.HandleFunc("/route/enable", routeEnableHandler)
 	http.HandleFunc("/route/disable", routeDisableHandler)
+	http.HandleFunc("/route/display", routeDisplayHandler)
 	http.HandleFunc("/haproxy/check_installation", haProxyCheckInstallationHandler)
 	http.HandleFunc("/haproxy/check_running", haProxyRunningHandler)
 	http.HandleFunc("/haproxy/display_status", haProxyDisplayStatusHandler)
