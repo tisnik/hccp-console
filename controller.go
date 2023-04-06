@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -44,12 +45,24 @@ func enableRouteWithID(id string) error {
 		return err
 	}
 
+	output, err := sendCommandThroughSocket("enable server http/myserver\n")
+	log.Println(output)
+	if err != nil {
+		return err
+	}
+
 	err = updateRouteState(routerID, true)
 	return err
 }
 
 func disableRouteWithID(id string) error {
 	routerID, err := retrieveRouterID(id)
+	if err != nil {
+		return err
+	}
+
+	output, err := sendCommandThroughSocket("disable server http/myserver\n")
+	log.Println(output)
 	if err != nil {
 		return err
 	}
