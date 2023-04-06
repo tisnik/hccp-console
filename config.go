@@ -17,7 +17,7 @@ limitations under the License.
 package main
 
 const (
-	serverAddress         = "localhost:8080"
+	serverAddress         = "localhost:8081"
 	HAProxyConfigFile     = "haproxy.cfg"
 	HAProxyExecutableName = "haproxy"
 	HAProxyProcessName    = "haproxy"
