@@ -17,9 +17,17 @@ limitations under the License.
 package main
 
 const (
-	serverAddress         = "localhost:8081"
-	HAProxyConfigFile     = "haproxy.cfg"
+	serverAddress = "localhost:8081"
+
+	// HAProxyConfigFile contains name of configuration file to be read by controller
+	HAProxyConfigFile = "haproxy.cfg"
+
+	// HAProxyExecutableName contains name of HAProxy executable name stored anywhere on path
 	HAProxyExecutableName = "haproxy"
-	HAProxyProcessName    = "haproxy"
-	HAProxyUnixSocket     = "/tmp/haproxy.sock"
+
+	// HAProxyProcessName contains name of HAProxy process name
+	HAProxyProcessName = "haproxy"
+
+	// HAProxyUnixSocket contians Unix socket used to communicate with HAProxy
+	HAProxyUnixSocket = "/tmp/haproxy.sock"
 )
