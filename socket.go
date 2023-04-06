@@ -27,7 +27,7 @@ func reader(r io.Reader) string {
 	output := ""
 	buf := make([]byte, 1024)
 	for {
-		n, err := r.Read(buf[:])
+		n, err := r.Read(buf)
 		if err != nil {
 			log.Println("End of stream")
 			return output

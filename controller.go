@@ -19,7 +19,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -27,7 +26,7 @@ import (
 )
 
 func retrieveRouterID(id string) (int, error) {
-	if len(id) == 0 {
+	if id == "" {
 		return -1, errors.New("ID not provided, or multiple IDs provided")
 	}
 
@@ -91,7 +90,7 @@ func readHAProxyConfiguration() (string, error) {
 	}
 
 	path := filepath.Join(homedir, HAProxyConfigFile)
-	config, err := ioutil.ReadFile(path)
+	config, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
