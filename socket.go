@@ -36,7 +36,6 @@ func reader(r io.Reader) string {
 		output += str
 		log.Println("Data read via socket", str)
 	}
-	return output
 }
 
 func sendCommandThroughSocket(command string) (string, error) {
