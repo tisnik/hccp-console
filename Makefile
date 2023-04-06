@@ -24,6 +24,10 @@ lint: ## Run golint
 	@echo "Running go lint"
 	./golint.sh
 
+vet: ## Run go vet. Report likely mistakes in source code
+	@echo "Running go vet"
+	./govet.sh
+
 cyclo: ## Run gocyclo
 	@echo "Running gocyclo"
 	./gocyclo.sh
@@ -36,7 +40,7 @@ goconst: ## Run goconst checker
 	@echo "Running goconst checker"
 	./goconst.sh ${VERBOSE}
 
-style: fmt lint cyclo goconst errcheck
+style: fmt vet lint cyclo goconst errcheck
 
 help: ## Show this help screen
 	@echo 'Usage: make <OPTIONS> ... <TARGETS>'
