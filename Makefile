@@ -20,7 +20,11 @@ cyclo: ## Run gocyclo
 	@echo "Running gocyclo"
 	./gocyclo.sh
 
-style: cyclo goconst
+errcheck: ## Run errcheck
+	@echo "Running errcheck"
+	./goerrcheck.sh
+
+style: cyclo goconst errcheck
 
 goconst: ## Run goconst checker
 	@echo "Running goconst checker"
