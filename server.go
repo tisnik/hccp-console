@@ -224,14 +224,16 @@ func notFoundResponse(writer http.ResponseWriter) {
 
 func getContentType(filename string) string {
 	// TODO: to map
-	if strings.HasSuffix(filename, ".html") {
+	switch {
+	case strings.HasSuffix(filename, ".html"):
 		return ContentTypeHTML
-	} else if strings.HasSuffix(filename, ".js") {
+	case strings.HasSuffix(filename, ".js"):
 		return ContentTypeJavaScript
-	} else if strings.HasSuffix(filename, ".css") {
+	case strings.HasSuffix(filename, ".css"):
 		return ContentTypeCSS
+	default:
+		return ContentTypeHTML
 	}
-	return ContentTypeHTML
 }
 
 func sendStaticPage(writer http.ResponseWriter, filename string) {
