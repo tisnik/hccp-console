@@ -20,6 +20,7 @@ package main
 type Route struct {
 	ID         int
 	Connection string
+	Backend    string
 	Status     string
 	Enabled    bool
 }
@@ -28,9 +29,9 @@ var routes []Route
 
 func init() {
 	routes = []Route{
-		Route{1, "first route", "connected", true},
-		Route{2, "second route", "disconnected", false},
-		Route{3, "third route", "error", false},
+		Route{1, "www.redhat.com", "www_redhat_com", "connected", true},
+		Route{2, "console.redhat.com", "console_redhat_com", "connected", true},
+		// Route{3, "third route", "error", false},
 	}
 }
 
@@ -42,6 +43,16 @@ func existingRouter(routerID int) bool {
 		}
 	}
 	return false
+}
+
+func getRouteBackend(routerID int) string {
+	// TODO: routes as regular interface
+	for _, route := range routes {
+		if route.ID == routerID {
+			return route.Backend
+		}
+	}
+	return ""
 }
 
 func updateRouteStatus(routerID int, status string, enable bool) {
