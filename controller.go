@@ -44,7 +44,11 @@ func enableRouteWithID(id string) error {
 		return err
 	}
 
-	output, err := sendCommandThroughSocket("enable server http/myserver\n")
+	backend := getRouteBackend(routerID)
+	command := "enable server " + backend + "/" + backend + "\n"
+	log.Println(command)
+
+	output, err := sendCommandThroughSocket(command)
 	log.Println(output)
 	if err != nil {
 		return err
@@ -60,7 +64,11 @@ func disableRouteWithID(id string) error {
 		return err
 	}
 
-	output, err := sendCommandThroughSocket("disable server http/myserver\n")
+	backend := getRouteBackend(routerID)
+	command := "disable server " + backend + "/" + backend + "\n"
+	log.Println(command)
+
+	output, err := sendCommandThroughSocket(command)
 	log.Println(output)
 	if err != nil {
 		return err
